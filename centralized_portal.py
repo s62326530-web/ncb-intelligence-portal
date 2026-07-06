@@ -31,7 +31,7 @@ st.set_page_config(
 )
 
 # ====================================
-# ENHANCED CUSTOM CSS
+# ENHANCED CUSTOM CSS WITH SIDEBAR FIX
 # ====================================
 
 st.markdown("""
@@ -361,13 +361,22 @@ st.markdown("""
         border: 1px solid rgba(10, 147, 150, 0.2);
     }
     
-    /* Sidebar */
+    /* Sidebar - FIXED AND IMPROVED */
     section[data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0f172a 0%, #1a2332 100%) !important;
         border-right: 2px solid #0a9396 !important;
         width: 280px !important;
         min-width: 280px !important;
         box-shadow: 4px 0 30px rgba(0,0,0,0.3);
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    section[data-testid="stSidebar"] > div {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     .sidebar-title {
@@ -432,32 +441,66 @@ st.markdown("""
         letter-spacing: 2px;
         font-size: 13px;
         text-transform: uppercase;
+        margin-bottom: 12px !important;
     }
     
-    /* Radio Buttons */
+    /* Radio Buttons - ENHANCED VISIBILITY */
+    .stRadio {
+        visibility: visible !important;
+        display: block !important;
+    }
+    
     .stRadio > div {
-        gap: 8px;
+        gap: 6px;
+        display: flex !important;
+        flex-direction: column !important;
     }
     
     .stRadio label {
-        background: rgba(255,255,255,0.05);
-        padding: 8px 16px;
-        border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.05);
-        transition: all 0.3s ease;
-        color: #cbd5e1;
-        font-weight: 500;
+        background: rgba(255,255,255,0.05) !important;
+        padding: 10px 16px !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(255,255,255,0.05) !important;
+        transition: all 0.3s ease !important;
+        color: #cbd5e1 !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        cursor: pointer !important;
+        visibility: visible !important;
+        margin: 2px 0 !important;
+        width: 100% !important;
     }
     
     .stRadio label:hover {
-        background: rgba(10, 147, 150, 0.1);
-        border-color: #0a9396;
-        color: white;
+        background: rgba(10, 147, 150, 0.15) !important;
+        border-color: #0a9396 !important;
+        color: white !important;
+        transform: translateX(5px) !important;
     }
     
     .stRadio label[data-baseweb="radio"] {
-        background: transparent;
+        background: transparent !important;
     }
+    
+    /* Radio button selected state */
+    .stRadio label[data-baseweb="radio"][data-checked="true"] {
+        background: linear-gradient(135deg, rgba(10, 147, 150, 0.2), rgba(0, 95, 115, 0.2)) !important;
+        border-color: #0a9396 !important;
+        border-left: 4px solid #0a9396 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 15px rgba(10, 147, 150, 0.2) !important;
+    }
+    
+    /* Individual nav item colors */
+    .nav-item-dashboard { border-left: 3px solid #0a9396 !important; }
+    .nav-item-maritime { border-left: 3px solid #007bff !important; }
+    .nav-item-uhm { border-left: 3px solid #ffc107 !important; }
+    .nav-item-seizure { border-left: 3px solid #dc3545 !important; }
+    .nav-item-pharma { border-left: 3px solid #28a745 !important; }
+    .nav-item-labbust { border-left: 3px solid #6f42c1 !important; }
     
     /* Buttons */
     .stButton button {
@@ -1654,7 +1697,7 @@ def get_records_by_filter(table, column, value):
     return execute_query(query, (value,), fetch_all=True)
 
 # ====================================
-# SIDEBAR
+# SIDEBAR - ENHANCED WITH COLORS
 # ====================================
 
 st.sidebar.markdown("""
@@ -1684,6 +1727,7 @@ st.sidebar.markdown("<hr style='border-color:rgba(255,255,255,0.1);'>", unsafe_a
 
 st.sidebar.markdown('<div class="nav-header">📋 NAVIGATION</div>', unsafe_allow_html=True)
 
+# Custom styled radio buttons with colors
 module = st.sidebar.radio(
     "",
     [
@@ -1694,7 +1738,8 @@ module = st.sidebar.radio(
         "💊 Pharma Monitoring",
         "🧪 Labbust"
     ],
-    index=0
+    index=0,
+    key="navigation"
 )
 
 st.sidebar.markdown("<hr style='border-color:rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
