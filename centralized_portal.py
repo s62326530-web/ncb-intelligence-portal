@@ -1654,94 +1654,6 @@ def get_records_by_filter(table, column, value):
     return execute_query(query, (value,), fetch_all=True)
 
 # ====================================
-# LOGIN SYSTEM
-# ====================================
-
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-if not st.session_state.logged_in:
-    DEMO_USERS = {
-        "admin": {
-            "password": hashlib.sha256("admin123".encode()).hexdigest(),
-            "role": "admin",
-            "id": 1
-        },
-        "user": {
-            "password": hashlib.sha256("user123".encode()).hexdigest(),
-            "role": "user",
-            "id": 2
-        }
-    }
-    
-    st.markdown("""
-    <style>
-    .login-box {
-        width: 450px;
-        margin: auto;
-        margin-top: 100px;
-        background: linear-gradient(145deg, #0f172a, #1a2332);
-        padding: 40px;
-        border-radius: 24px;
-        border: 1px solid rgba(10, 147, 150, 0.3);
-        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-    .login-title {
-        text-align: center;
-        color: #94d2bd;
-        font-size: 32px;
-        font-weight: 800;
-        margin-bottom: 30px;
-        background: linear-gradient(135deg, #0a9396, #94d2bd);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.markdown('<div class="login-title">🚨 NCB Intelligence Portal</div>', unsafe_allow_html=True)
-
-    with st.container():
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            username = st.text_input("👤 Username", key="login_username")
-            password = st.text_input("🔑 Password", type="password", key="login_password")
-            
-            if st.button("🔓 Login", use_container_width=True):
-                hashed_password = hashlib.sha256(password.encode()).hexdigest()
-                
-                try:
-                    user = execute_query(
-                        'SELECT * FROM users WHERE username = %s AND password = %s',
-                        (username, hashed_password),
-                        fetch_one=True
-                    )
-                    if user:
-                        st.session_state.logged_in = True
-                        st.session_state.user_id = user[0]
-                        st.session_state.username = user[1]
-                        st.session_state.role = user[3]
-                        st.rerun()
-                    else:
-                        st.error("Invalid Username or Password")
-                except:
-                    if username in DEMO_USERS and DEMO_USERS[username]["password"] == hashed_password:
-                        st.session_state.logged_in = True
-                        st.session_state.user_id = DEMO_USERS[username]["id"]
-                        st.session_state.username = username
-                        st.session_state.role = DEMO_USERS[username]["role"]
-                        st.rerun()
-                    else:
-                        st.error("Invalid Username or Password")
-            
-            with st.expander("ℹ️ Demo Credentials"):
-                st.info("👤 Username: admin\n🔑 Password: admin123")
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.stop()
-
-# ====================================
 # SIDEBAR
 # ====================================
 
@@ -1752,15 +1664,11 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.sidebar.markdown(f"""
+st.sidebar.markdown("""
 <div class="welcome-text">
-    <p style="margin:0;color:#e9ecef;">👤 Welcome, <strong style="color:#94d2bd;">{st.session_state.username}</strong></p>
+    <p style="margin:0;color:#e9ecef;">🔐 <strong style="color:#94d2bd;">NCB Intelligence Portal</strong></p>
 </div>
 """, unsafe_allow_html=True)
-
-if st.sidebar.button("🚪 Logout", use_container_width=True):
-    st.session_state.logged_in = False
-    st.rerun()
 
 st.sidebar.markdown("<hr style='border-color:rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
 
